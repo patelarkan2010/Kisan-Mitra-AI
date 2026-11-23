@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kisan Mitra AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f8ee;color:#18351e}
+header{background:#187b35;color:white;padding:24px 18px;text-align:center}
+header h1{margin:0;font-size:27px}
+header p{margin:9px 0 0}
+main{padding:16px;max-width:650px;margin:auto}
+.card{background:white;padding:18px;margin:14px 0;border-radius:14px;box-shadow:0 2px 9px #0001}
+h2{font-size:19px;color:#187b35;margin-top:0}
+select,input,button{width:100%;padding:13px;margin:7px 0;border:1px solid #bbb;border-radius:9px;font-size:16px}
+button{background:#187b35;color:white;border:0;font-weight:bold}
+.result{background:#e8f5e9;padding:12px;border-radius:9px;margin-top:10px;white-space:pre-wrap}
+footer{text-align:center;padding:20px;color:#56705a}
+</style>
+</head>
+<body>
+<header>
+<h1>🌾 किसान मित्र AI</h1>
+<p>भारतीय किसानों का डिजिटल साथी</p>
+</header>
+
+<main>
+<div class="card">
+<h2>🌐 भाषा चुनें</h2>
+<select id="language" onchange="changeLanguage()">
+<option value="hi">हिंदी</option>
+<option value="mr">मराठी</option>
+</select>
+</div>
+
+<div class="card">
+<h2 id="cropTitle">🌱 फसल की जानकारी</h2>
+<select id="crop">
+<option value="wheat">गेहूं</option>
+<option value="rice">धान</option>
+<option value="cotton">कपास</option>
+<option value="soybean">सोयाबीन</option>
+<option value="sugarcane">गन्ना</option>
+<option value="tomato">टमाटर</option>
+</select>
+<button onclick="cropInfo()" id="cropBtn">जानकारी प्राप्त करें</button>
+<div class="result" id="cropResult">अपनी फसल चुनें।</div>
+</div>
+
+<div class="card">
+<h2 id="diseaseTitle">🐛 फसल की बीमारी की जानकारी</h2>
+<select id="symptom">
+<option value="yellow">पत्तियाँ पीली होना</option>
+<option value="spots">पत्तियों पर धब्बे</option>
+<option value="dry">पत्तियाँ सूखना</option>
+<option value="insects">कीड़े दिखाई देना</option>
+</select>
+<button onclick="diseaseInfo()" id="diseaseBtn">जानकारी देखें</button>
+<div class="result" id="diseaseResult">अपनी समस्या चुनें।</div>
+</div>
+
+<div class="card">
+<h2 id="weatherTitle">🌦️ मौसम की जानकारी</h2>
+<input id="city" placeholder="अपने गाँव या शहर का नाम लिखें">
+<button onclick="weatherInfo()" id="weatherBtn">मौसम जानकारी</button>
+<div class="result" id="weatherResult">मौसम की जानकारी के लिए अपने स्थानीय मौसम विभाग की सलाह लें।</div>
+</div>
+
+<div class="card">
+<h2 id="farmerTitle">👨‍🌾 किसान पंजीकरण</h2>
+<input id="farmerName" placeholder="किसान का नाम">
+<input id="mobile" type="tel" maxlength="10" placeholder="मोबाइल नंबर">
+<button onclick="registerFarmer()" id="registerBtn">जानकारी जमा करें</button>
+<div class="result" id="farmerResult"></div>
+</div>
+
+<div class="card">
+<h2>💰 मंडी भाव</h2>
+<p>अपने नजदीकी मंडी के ताजा भाव जानने के लिए Agmarknet या सरकारी मंडी पोर्टल देखें। इस शुरुआती वर्जन में लाइव भाव उपलब्ध नहीं हैं।</p>
+<a href="https://agmarknet.gov.in/" target="_blank">सरकारी मंडी भाव देखें ↗</a>
+</div>
+</main>
+
+<footer>© 2026 Kisan Mitra AI | किसानों की सेवा में 🌾</footer>
+
+<script>
+const info={
+wheat:"गेहूं: समय पर सिंचाई करें और खेत में खरपतवार पर नियंत्रण रखें।",
+rice:"धान: खेत में उचित जल प्रबंधन करें और पौधों की नियमित निगरानी करें।",
+cotton:"कपास: पौधों को नियमित देखें और कीटों की पहचान करें।",
+soybean:"सोयाबीन: जल निकासी अच्छी रखें और फसल की नियमित जाँच करें।",
+sugarcane:"गन्ना: उचित सिंचाई और खेत की सफाई का ध्यान रखें।",
+tomato:"टमाटर: पौधों को सहारा दें और पत्तियों की नियमित जाँच करें।"
+};
+function cropInfo(){
+document.getElementById("cropResult").textContent=info[document.getElementById("crop").value];
+}
+const problems={
+yellow:"पत्तियाँ पीली होने के कई कारण हो सकते हैं, जैसे पोषक तत्वों की कमी या पानी की समस्या। मिट्टी की जाँच करवाएँ।",
+spots:"धब्बे फफूंद या अन्य कारणों से हो सकते हैं। प्रभावित पत्तियों की जाँच कृषि विशेषज्ञ से करवाएँ।",
+dry:"पत्तियाँ सूखने का कारण पानी की कमी, जड़ की समस्या या रोग हो सकता है।",
+insects:"कीट की सही पहचान करें। बिना पहचान के कीटनाशक का उपयोग न करें।"
+};
+function diseaseInfo(){
+document.getElementById("diseaseResult").textContent=problems[document.getElementById("symptom").value]+"\n\nयह सामान्य जानकारी है, बीमारी का पक्का निदान नहीं।";
+}
+function weatherInfo(){
+let city=document.getElementById("city").value.trim();
+if(!city){alert("गाँव या शहर का नाम लिखें");return;}
+document.getElementById("weatherResult").textContent=city+" के लिए लाइव मौसम अभी जुड़ा नहीं है। कृपया IMD की वेबसाइट देखें: mausam.imd.gov.in";
+}
+function registerFarmer(){
+let name=document.getElementById("farmerName").value.trim();
+let mobile=document.getElementById("mobile").value.trim();
+if(!name||!/^[0-9]{10}$/.test(mobile)){
+alert("कृपया नाम और सही 10 अंकों का मोबाइल नंबर लिखें।");
+return;
+}
+document.getElementById("farmerResult").textContent="धन्यवाद "+name+"! आपका विवरण इस डेमो में केवल स्क्रीन पर दिखाया गया है। यह किसी सर्वर पर जमा नहीं हुआ है।";
+}
+function changeLanguage(){
+let mr=document.getElementById("language").value==="mr";
+document.getElementById("cropTitle").textContent=mr?"🌱 पिकांची माहिती":"🌱 फसल की जानकारी";
+document.getElementById("cropBtn").textContent=mr?"माहिती मिळवा":"जानकारी प्राप्त करें";
+document.getElementById("diseaseTitle").textContent=mr?"🐛 पिकांच्या रोगांची माहिती":"🐛 फसल की बीमारी की जानकारी";
+document.getElementById("diseaseBtn").textContent=mr?"माहिती पहा":"जानकारी देखें";
+document.getElementById("weatherTitle").textContent=mr?"🌦️ हवामानाची माहिती":"🌦️ मौसम की जानकारी";
+document.getElementById("weatherBtn").textContent=mr?"हवामान माहिती":"मौसम जानकारी";
+document.getElementById("farmerTitle").textContent=mr?"👨‍🌾 शेतकरी नोंदणी":"👨‍🌾 किसान पंजीकरण";
+document.getElementById("registerBtn").textContent=mr?"माहिती जमा करा":"जानकारी जमा करें";
+document.getElementById("farmerName").placeholder=mr?"शेतकऱ्याचे नाव":"किसान का नाम";
+document.getElementById("mobile").placeholder=mr?"मोबाईल नंबर":"मोबाइल नंबर";
+document.getElementById("city").placeholder=mr?"गाव किंवा शहराचे नाव":"अपने गाँव या शहर का नाम लिखें";
+}
+</script>
+</body>
+</html 
